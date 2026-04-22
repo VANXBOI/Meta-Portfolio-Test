@@ -10,10 +10,16 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
+import { useSubmit } from "../hooks/useSubmit";
+import { useAlertContext } from "../context/AlertContext";
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const ContactMeSection = () => {
+  const { isLoading, response, submit } = useSubmit();
+  const { onOpen } = useAlertContext();
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -30,25 +36,52 @@ const ContactMeSection = () => {
         .required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      submit(values);
     },
   });
+
+  useEffect(() => {
+    if (!response) return;
+
+    if (response.type === "success") {
+      onOpen(
+        "success",
+        `Thanks ${formik.values.firstName}`,
+        response.message
+      );
+      formik.resetForm();
+    } else {
+      onOpen("error", "Oops!", response.message);
+    }
+  }, [response, onOpen, formik]);
 
   return (
     <Box p={10} bg="purple.700" color="white">
       <form onSubmit={formik.handleSubmit}>
         <VStack spacing={4}>
 
-          <FormControl isInvalid={formik.touched.firstName && formik.errors.firstName}>
+          <FormControl
+            isInvalid={
+              formik.touched.firstName && Boolean(formik.errors.firstName)
+            }
+          >
             <FormLabel>Name</FormLabel>
             <Input {...formik.getFieldProps("firstName")} />
-            <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
+            <FormErrorMessage>
+              {formik.errors.firstName}
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+          <FormControl
+            isInvalid={
+              formik.touched.email && Boolean(formik.errors.email)
+            }
+          >
             <FormLabel>Email</FormLabel>
             <Input {...formik.getFieldProps("email")} />
-            <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+            <FormErrorMessage>
+              {formik.errors.email}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl>
@@ -59,13 +92,23 @@ const ContactMeSection = () => {
             </Select>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched.comment && formik.errors.comment}>
+          <FormControl
+            isInvalid={
+              formik.touched.comment && Boolean(formik.errors.comment)
+            }
+          >
             <FormLabel>Your message</FormLabel>
             <Textarea {...formik.getFieldProps("comment")} />
-            <FormErrorMessage>{formik.errors.comment}</FormErrorMessage>
+            <FormErrorMessage>
+              {formik.errors.comment}
+            </FormErrorMessage>
           </FormControl>
 
-          <Button type="submit" colorScheme="teal">
+          <Button
+            type="submit"
+            colorScheme="teal"
+            isLoading={isLoading}
+          >
             Submit
           </Button>
 
