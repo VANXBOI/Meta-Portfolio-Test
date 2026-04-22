@@ -53,10 +53,10 @@ const ContactMeSection = () => {
     } else {
       onOpen("error", "Oops!", response.message);
     }
-  }, [response, onOpen, formik]);
+  }, [response]);
 
   return (
-    <Box p={10} bg="purple.700" color="white">
+    <Box id="contactme-section" p={10} bg="purple.700" color="white">
       <form onSubmit={formik.handleSubmit}>
         <VStack spacing={4}>
 

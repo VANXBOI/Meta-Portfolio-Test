@@ -42,11 +42,12 @@ export default function Header() {
         {/* RIGHT SIDE (links) */}
         <nav>
           <HStack spacing={6}>
-            <a href="/#projects-section" onClick={(e) => handleClick(e, "projects-section")}>
-              Projects
+            <a href="#projects-section" onClick={(e) => handleClick(e, "projects-section")}>
+            Projects
             </a>
-            <a href="/#contactme-section" onClick={(e) => handleClick(e, "contactme-section")}>
-              Contact Me
+
+            <a href="#contactme-section" onClick={(e) => handleClick(e, "contactme-section")}>
+            Contact Me
             </a>
           </HStack>
         </nav>
