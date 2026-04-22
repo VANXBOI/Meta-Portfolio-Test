@@ -3,6 +3,10 @@ import LandingSection from "./components/LandingSection";
 import ProjectsSection from "./components/ProjectsSection";
 import ContactMeSection from "./components/ContactMeSection";
 
+
+
+
+
 function App() {
   return (
     <>
